@@ -11,42 +11,59 @@ export const Board = () => {
     return row % 2 === 0 ? col % 2 !== 0 : col % 2 === 0;
   };
 
+  const initialBoardSetup = {
+    white: {
+      pieces: {
+        names: [
+          'rook',
+          'knight',
+          'bishop',
+          'queen',
+          'king',
+          'bishop',
+          'knight',
+          'rook',
+        ],
+        ids: ['3', '5', '4', '2', '1', '4', '5', '3'],
+        pawns: Array(8).fill(6),
+      },
+    },
+    black: {
+      pieces: {
+        names: [
+          'rook',
+          'knight',
+          'bishop',
+          'queen',
+          'king',
+          'bishop',
+          'knight',
+          'rook',
+        ],
+        ids: ['9', '11', '10', '8', '7', '10', '11', '9'],
+        pawns: Array(8).fill(12),
+      },
+    },
+  };
+
   const setPieces = () => {
-    // 1, 7 -> King
-    // 2, 8 -> Queen
-    // 3, 9 -> Rook
-    // 4, 10 -> Bishop
-    // 5, 11 -> Knight
-    // 6, 12 -> Pawn
     const newBoard = [...board];
 
-    // White pieces
-    newBoard[0] = 3; // Rook
-    newBoard[1] = 5; // Knight
-    newBoard[2] = 4; // Bishop
-    newBoard[3] = 2; // Queen
-    newBoard[4] = 1; // King
-    newBoard[5] = 4; // Bishop
-    newBoard[6] = 5; // Knight
-    newBoard[7] = 3; // Rook
+    initialBoardSetup.white.pieces.ids.forEach((piece, index) => {
+      newBoard[index] = `${piece}`;
+    });
 
-    for (let i = 8; i < 16; i++) {
-      newBoard[i] = 6; // Pawn
-    }
+    initialBoardSetup.white.pieces.pawns.forEach((_, index) => {
+      newBoard[8 + index] = 6;
+    });
 
-    // Black pieces
-    newBoard[56] = 9; // Rook
-    newBoard[57] = 11; // Knight
-    newBoard[58] = 10; // Bishop
-    newBoard[59] = 8; // Queen
-    newBoard[60] = 7; // King
-    newBoard[61] = 10; // Bishop
-    newBoard[62] = 11; // Knight
-    newBoard[63] = 9; // Rook
+    initialBoardSetup.black.pieces.ids.forEach((piece, index) => {
+      newBoard[56 + index] = `${piece}`;
+    });
 
-    for (let i = 48; i < 56; i++) {
-      newBoard[i] = 12; // Pawn
-    }
+    initialBoardSetup.black.pieces.pawns.forEach((_, index) => {
+      newBoard[48 + index] = 12;
+    });
 
     return newBoard;
   };
