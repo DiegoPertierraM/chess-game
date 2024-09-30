@@ -1,4 +1,4 @@
-import { Piece } from '../../core/models/Board.types';
+import { Piece } from '../core/models/Board.types';
 
 export const setInitialBoard = () => {
   const initialBoardSetup = {
