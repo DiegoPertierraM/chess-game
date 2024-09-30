@@ -11,7 +11,7 @@ export const Square: React.FC<SquareProps> = ({ isBlack, piece }) => {
     >
       {piece && (
         <img
-          src={`img/pieces/normal-set/${piece}.svg`}
+          src={`img/pieces/normal-set/${piece.identifier}.svg`}
           alt={`${piece} chess piece`}
         />
       )}
