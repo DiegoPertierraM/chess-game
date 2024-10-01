@@ -1,4 +1,4 @@
-import { Piece, Pieces } from '../core/models/Board.types';
+import { Piece, Pieces } from '../core/models/types';
 import { assignPieceName } from './assignPieceName';
 
 export const setInitialBoard = () => {
@@ -17,39 +17,45 @@ export const setInitialBoard = () => {
     },
   };
 
-  const newBoard: Piece[] | null[] = Array(64).fill(null);
+  const newBoard: (Piece | null)[][] = Array(8)
+    .fill(null)
+    .map(() => Array(8).fill(null));
 
+  // Place white major pieces on first row
   initialBoardSetup.white.pieces.ids.forEach((piece, index) => {
-    newBoard[index] = {
+    newBoard[0][index] = {
       identifier: `${piece}`,
-      position: index,
+      position: [0, index], // Now position is a pair [row, column]
       type: assignPieceName(piece) as Pieces,
       color: 'white',
     };
   });
 
+  // Place white pawns on row 1 (second row)
   initialBoardSetup.white.pieces.pawns.forEach((_, index) => {
-    newBoard[8 + index] = {
+    newBoard[1][index] = {
       identifier: '6',
-      position: 8 + index,
+      position: [1, index],
       type: 'pawn',
       color: 'white',
     };
   });
 
+  // Place black major pieces on last row
   initialBoardSetup.black.pieces.ids.forEach((piece, index) => {
-    newBoard[56 + index] = {
+    newBoard[7][index] = {
       identifier: `${piece}`,
-      position: 56 + index,
+      position: [7, index],
       type: assignPieceName(piece) as Pieces,
       color: 'black',
     };
   });
 
+  // Place black pawns on row 6 (second-to-last row)
   initialBoardSetup.black.pieces.pawns.forEach((_, index) => {
-    newBoard[48 + index] = {
+    newBoard[6][index] = {
       identifier: '12',
-      position: 48 + index,
+      position: [6, index],
       type: 'pawn',
       color: 'black',
     };

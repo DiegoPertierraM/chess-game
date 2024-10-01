@@ -1,4 +1,4 @@
-import { SquareProps } from '../../core/models/Board.types';
+import { SquareProps } from '../../core/models/types';
 import './Square.css';
 
 export const Square: React.FC<SquareProps> = ({

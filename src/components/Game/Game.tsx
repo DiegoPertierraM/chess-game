@@ -1,7 +1,7 @@
 import './Game.css';
 import { useState } from 'react';
 import { Board } from '../Board/Board';
-import { Piece } from '../../core/models/Board.types';
+import { Piece } from '../../core/models/types';
 import { setInitialBoard } from '../../helpers/setInitialBoard';
 import { getRandomTurn } from '../../helpers/getRandomTurn';
 
@@ -16,7 +16,7 @@ export const Game = () => {
     setTurn((prevTurn) => (prevTurn === 'white' ? 'black' : 'white'));
   };
 
-  const handleMove = (updatedBoard: Piece[]) => {
+  const handleMove = (updatedBoard: Piece[][]) => {
     if (!winner) {
       setBoard(updatedBoard);
       checkForWinner(updatedBoard);
@@ -24,12 +24,12 @@ export const Game = () => {
     }
   };
 
-  const checkForWinner = (updatedBoard: Piece[]) => {
-    const hasWhiteKing = updatedBoard.some(
-      (piece) => piece?.type === 'king' && piece?.color === 'white'
+  const checkForWinner = (updatedBoard: Piece[][]) => {
+    const hasWhiteKing = updatedBoard.some((row) =>
+      row.some((piece) => piece?.type === 'king' && piece?.color === 'white')
     );
-    const hasBlackKing = updatedBoard.some(
-      (piece) => piece?.type === 'king' && piece?.color === 'black'
+    const hasBlackKing = updatedBoard.some((row) =>
+      row.some((piece) => piece?.type === 'king' && piece?.color === 'black')
     );
 
     if (!hasWhiteKing) {
