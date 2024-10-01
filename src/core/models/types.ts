@@ -2,7 +2,7 @@ export type Pieces = 'king' | 'queen' | 'rook' | 'bishop' | 'knight' | 'pawn';
 
 export type Piece = {
   identifier: string;
-  position: number;
+  position: number[];
   type: Pieces;
   color: 'white' | 'black';
 };
@@ -17,7 +17,7 @@ export type SquareProps = {
 };
 
 export type BoardProps = {
-  board: Piece[] | null[];
+  board: (Piece | null)[][];
   turn: 'white' | 'black' | null;
-  onMove: (updatedBoard: Piece[]) => void;
+  onMove: (updatedBoard: Piece[][]) => void;
 };
