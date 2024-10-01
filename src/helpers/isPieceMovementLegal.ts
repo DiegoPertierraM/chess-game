@@ -1,13 +1,18 @@
 import { Piece } from '../core/models/types';
 
-const isLegalMovement = (piece: Piece, targetPiece: Piece, turn: string) => {
+const isLegalMovement = (piece: Piece, targetSquare: Piece, turn: string) => {
+  if (piece.color !== turn) return false;
+
+  const rowDiff = Math.abs(piece.position[0] - targetSquare.position[0]);
+  const colDiff = Math.abs(piece.position[1] - targetSquare.position[1]);
+
   switch (piece?.type) {
     case 'pawn':
       console.log('is pawn');
-      if (turn === 'white' && !targetPiece?.identifier) {
+      if (turn === 'white' && !targetSquare?.identifier) {
         if (
-          targetPiece?.position[0] === piece.position[0] + 1 ||
-          (targetPiece?.position[0] === piece.position[0] + 2 &&
+          targetSquare?.position[0] === piece.position[0] + 1 ||
+          (targetSquare?.position[0] === piece.position[0] + 2 &&
             piece.isFirstMove === true)
         ) {
           if (piece.isFirstMove === true) {
@@ -18,10 +23,10 @@ const isLegalMovement = (piece: Piece, targetPiece: Piece, turn: string) => {
         }
       }
 
-      if (turn === 'black' && !targetPiece?.identifier) {
+      if (turn === 'black' && !targetSquare?.identifier) {
         if (
-          targetPiece?.position[0] === piece.position[0] - 1 ||
-          (targetPiece?.position[0] === piece.position[0] - 2 &&
+          targetSquare?.position[0] === piece.position[0] - 1 ||
+          (targetSquare?.position[0] === piece.position[0] - 2 &&
             piece.isFirstMove === true)
         ) {
           if (piece.isFirstMove === true) {
@@ -34,52 +39,57 @@ const isLegalMovement = (piece: Piece, targetPiece: Piece, turn: string) => {
 
       return false;
     case 'king':
-      console.log('is king');
-      return true;
+      if (rowDiff <= 1 && colDiff <= 1 && piece.color !== targetSquare.color) {
+        return true;
+      }
+
+      return false;
     case 'queen':
-      console.log('is queen');
-      return true;
+      return false;
     case 'rook':
-      console.log('is rook');
-      return true;
+      return false;
     case 'bishop':
-      console.log('is bishop');
-      return true;
+      return false;
     case 'knight':
-      console.log('is knight');
-      return true;
+      return false;
     default:
       return false;
   }
 };
 
-const isLegalCapture = (piece: Piece, targetPiece: Piece, turn: string) => {
-  if (!targetPiece?.identifier) return false;
+const isLegalCapture = (piece: Piece, targetSquare: Piece, turn: string) => {
+  if (!targetSquare?.identifier || piece.color !== turn) return false;
   console.log(piece?.position);
-  console.log(targetPiece?.position);
+  console.log(targetSquare?.position);
+
+  if (isLegalMovement(piece, targetSquare, turn) === false) return false;
+
   switch (piece?.type) {
     case 'pawn':
       if (turn === 'white') {
         if (
-          targetPiece.position[0] === piece.position[0] + 1 &&
-          (targetPiece.position[1] === piece.position[1] + 1 ||
-            targetPiece.position[1] === piece.position[1] - 1)
+          targetSquare.position[0] === piece.position[0] + 1 &&
+          (targetSquare.position[1] === piece.position[1] + 1 ||
+            targetSquare.position[1] === piece.position[1] - 1)
         )
           return true;
       }
 
       if (turn === 'black') {
         if (
-          targetPiece.position[0] === piece.position[0] - 1 &&
-          (targetPiece.position[1] === piece.position[1] + 1 ||
-            targetPiece.position[1] === piece.position[1] - 1)
+          targetSquare.position[0] === piece.position[0] - 1 &&
+          (targetSquare.position[1] === piece.position[1] + 1 ||
+            targetSquare.position[1] === piece.position[1] - 1)
         )
           return true;
       }
 
       return false;
     case 'king':
-      if (targetPiece?.type === 'king') return false;
+      if (targetSquare?.type === 'king') return false;
+      if (targetSquare?.color !== piece.color) return true;
+
+      return false;
   }
 
   return true;
@@ -87,17 +97,15 @@ const isLegalCapture = (piece: Piece, targetPiece: Piece, turn: string) => {
 
 export const isPieceMovementLegal = (
   piece: Piece | null,
-  targetPiece: Piece | null,
+  targetSquare: Piece | null,
   turn: string | null
 ) => {
-  const isTurn = piece?.color === turn ? true : false;
-
   if (
-    (piece &&
-      isTurn &&
-      isLegalMovement(piece, targetPiece as Piece, turn as string)) ||
-    isLegalCapture(piece as Piece, targetPiece as Piece, turn as string)
+    (piece && isLegalMovement(piece, targetSquare as Piece, turn as string)) ||
+    isLegalCapture(piece as Piece, targetSquare as Piece, turn as string)
   ) {
     return true;
   }
+
+  return false;
 };

@@ -38,12 +38,12 @@ export const Board: React.FC<BoardProps> = ({ board, turn, onMove }) => {
       (draggedPiecePosition.row !== targetRow ||
         draggedPiecePosition.col !== targetCol)
     ) {
-      const updatedBoard = board.map(rowArr => [...rowArr]);
+      const updatedBoard = board.map((rowArr) => [...rowArr]);
       const { row: draggedRow, col: draggedCol } = draggedPiecePosition;
       const draggedPiece = updatedBoard[draggedRow][draggedCol];
-      const targetPiece = updatedBoard[targetRow][targetCol];
+      const targetSquare = updatedBoard[targetRow][targetCol];
 
-      if (isPieceMovementLegal(draggedPiece, targetPiece, turn)) {
+      if (isPieceMovementLegal(draggedPiece, targetSquare, turn)) {
         updatedBoard[targetRow][targetCol] = draggedPiece as Piece;
         updatedBoard[draggedRow][draggedCol] = {
           position: [draggedRow, draggedCol],
@@ -68,7 +68,7 @@ export const Board: React.FC<BoardProps> = ({ board, turn, onMove }) => {
               piece={piece as Piece}
               onDragStart={() => handleDragStart(rowIndex, colIndex)}
               onDragOver={handleDragOver}
-              onDrop={e => handleDrop(rowIndex, colIndex, e)}
+              onDrop={(e) => handleDrop(rowIndex, colIndex, e)}
             />
           ))
         )}

@@ -10,8 +10,6 @@ export const Game = () => {
   const [board, setBoard] = useState(setInitialBoard());
   const [winner, setWinner] = useState<null | 'white' | 'black'>(null);
 
-  console.log(board);
-
   const toggleTurn = () => {
     setTurn((prevTurn) => (prevTurn === 'white' ? 'black' : 'white'));
   };
