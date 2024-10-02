@@ -3,6 +3,7 @@ import { Square } from '../Square/Square';
 import { useState } from 'react';
 import { BoardProps, Piece } from '../../core/models/types';
 import { isSquareBlack } from '../../helpers/isSquareBlack';
+import { isPieceMovementLegal } from '../../helpers/isPieceMovementLegal';
 
 export const Board: React.FC<BoardProps> = ({ board, turn, onMove }) => {
   const [draggedPiecePosition, setDraggedPiecePosition] = useState<{
@@ -20,7 +21,18 @@ export const Board: React.FC<BoardProps> = ({ board, turn, onMove }) => {
     e.preventDefault();
   };
 
-  const handleDrop = (targetRow: number, targetCol: number) => {
+  const handleDrop = (
+    targetRow: number,
+    targetCol: number,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
+    // Cancel the drag if the mouse right clicks
+    if (event.button === 2) {
+      console.log('Right-click detected, move canceled');
+      setDraggedPiecePosition(null);
+      return;
+    }
+
     if (
       draggedPiecePosition &&
       (draggedPiecePosition.row !== targetRow ||
@@ -29,15 +41,15 @@ export const Board: React.FC<BoardProps> = ({ board, turn, onMove }) => {
       const updatedBoard = board.map((rowArr) => [...rowArr]);
       const { row: draggedRow, col: draggedCol } = draggedPiecePosition;
       const draggedPiece = updatedBoard[draggedRow][draggedCol];
-      const targetPiece = updatedBoard[targetRow][targetCol];
+      const targetSquare = updatedBoard[targetRow][targetCol];
 
-      if (
-        draggedPiece &&
-        draggedPiece.color === turn &&
-        (!targetPiece || targetPiece.color !== draggedPiece.color)
-      ) {
-        updatedBoard[targetRow][targetCol] = draggedPiece;
-        updatedBoard[draggedRow][draggedCol] = null;
+      if (isPieceMovementLegal(draggedPiece, targetSquare, turn)) {
+        updatedBoard[targetRow][targetCol] = draggedPiece as Piece;
+        updatedBoard[draggedRow][draggedCol] = {
+          position: [draggedRow, draggedCol],
+          type: null,
+        };
+        draggedPiece!.position = [targetRow, targetCol];
         onMove(updatedBoard as Piece[][]);
         setDraggedPiecePosition(null);
       }
@@ -56,7 +68,7 @@ export const Board: React.FC<BoardProps> = ({ board, turn, onMove }) => {
               piece={piece as Piece}
               onDragStart={() => handleDragStart(rowIndex, colIndex)}
               onDragOver={handleDragOver}
-              onDrop={() => handleDrop(rowIndex, colIndex)}
+              onDrop={(e) => handleDrop(rowIndex, colIndex, e)}
             />
           ))
         )}

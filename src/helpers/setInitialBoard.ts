@@ -21,6 +21,15 @@ export const setInitialBoard = () => {
     .fill(null)
     .map(() => Array(8).fill(null));
 
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      newBoard[row][col] = {
+        position: [row, col],
+        type: null, // Initially, no piece is on the square
+      } as Piece;
+    }
+  }
+
   // Place white major pieces on first row
   initialBoardSetup.white.pieces.ids.forEach((piece, index) => {
     newBoard[0][index] = {
@@ -38,6 +47,7 @@ export const setInitialBoard = () => {
       position: [1, index],
       type: 'pawn',
       color: 'white',
+      isFirstMove: true,
     };
   });
 
@@ -58,6 +68,7 @@ export const setInitialBoard = () => {
       position: [6, index],
       type: 'pawn',
       color: 'black',
+      isFirstMove: true,
     };
   });
 

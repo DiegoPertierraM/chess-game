@@ -1,10 +1,18 @@
-export type Pieces = 'king' | 'queen' | 'rook' | 'bishop' | 'knight' | 'pawn';
+export type Pieces =
+  | 'king'
+  | 'queen'
+  | 'rook'
+  | 'bishop'
+  | 'knight'
+  | 'pawn'
+  | null;
 
 export type Piece = {
-  identifier: string;
+  identifier?: string;
   position: number[];
   type: Pieces;
-  color: 'white' | 'black';
+  color?: 'white' | 'black';
+  isFirstMove?: boolean;
 };
 
 export type SquareProps = {
@@ -13,7 +21,7 @@ export type SquareProps = {
   piece: Piece;
   onDragStart: (index: number) => void;
   onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDrop: (index: number) => void;
+  onDrop: (event: React.MouseEvent<HTMLDivElement>, index: number) => void;
 };
 
 export type BoardProps = {

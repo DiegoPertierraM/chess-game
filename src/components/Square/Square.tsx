@@ -15,9 +15,13 @@ export const Square: React.FC<SquareProps> = ({
     <div
       className={`square ${squareColor}`}
       onDragOver={onDragOver}
-      onDrop={() => onDrop(index)}
+      onDrop={(e) => {
+        e.preventDefault();
+        onDrop(e, index);
+      }}
+      onContextMenu={(e) => e.preventDefault()}
     >
-      {piece && (
+      {piece && piece.identifier && (
         <img
           src={`img/pieces/normal-set/${piece.identifier}.svg`}
           alt={`${piece} chess piece`}
