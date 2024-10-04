@@ -9,7 +9,7 @@ export type Pieces =
 
 export type Piece = {
   identifier?: string;
-  position: number[];
+  position: [number, number];
   type: Pieces;
   color?: 'white' | 'black';
   isFirstMove?: boolean;

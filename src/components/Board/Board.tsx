@@ -43,7 +43,7 @@ export const Board: React.FC<BoardProps> = ({ board, turn, onMove }) => {
       const draggedPiece = updatedBoard[draggedRow][draggedCol];
       const targetSquare = updatedBoard[targetRow][targetCol];
 
-      if (isPieceMovementLegal(draggedPiece, targetSquare, turn)) {
+      if (isPieceMovementLegal(draggedPiece, targetSquare, turn, board)) {
         updatedBoard[targetRow][targetCol] = draggedPiece as Piece;
         updatedBoard[draggedRow][draggedCol] = {
           position: [draggedRow, draggedCol],
