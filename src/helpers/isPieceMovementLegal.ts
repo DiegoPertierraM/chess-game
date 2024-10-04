@@ -100,8 +100,18 @@ const isLegalMovement = (
 
       return false;
     case 'rook':
+      if (isHorizontalMove || isVerticalMove) {
+        if (isPathClear(piece.position, targetSquare.position, board)) {
+          return true;
+        }
+      }
       return false;
     case 'bishop':
+      if (isDiagonalMove) {
+        if (isPathClear(piece.position, targetSquare.position, board)) {
+          return true;
+        }
+      }
       return false;
     case 'knight':
       return false;
