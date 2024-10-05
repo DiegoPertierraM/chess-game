@@ -86,7 +86,7 @@ const isLegalMovement = (
 
       return false;
     case 'king':
-      if (rowDiff <= 1 && colDiff <= 1 && piece.color !== targetSquare.color) {
+      if (rowDiff <= 1 && colDiff <= 1) {
         return true;
       }
 
@@ -114,6 +114,12 @@ const isLegalMovement = (
       }
       return false;
     case 'knight':
+      if (
+        (rowDiff === 2 && colDiff === 1) ||
+        (rowDiff === 1 && colDiff === 2)
+      ) {
+        return true;
+      }
       return false;
     default:
       return false;
