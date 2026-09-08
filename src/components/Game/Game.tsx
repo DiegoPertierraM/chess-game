@@ -6,11 +6,13 @@ import { setInitialBoard } from '../../helpers/setInitialBoard';
 import { getRandomTurn } from '../../helpers/getRandomTurn';
 
 export const Game = () => {
-  const [turn, setTurn] = useState<'white' | 'black'>(getRandomTurn());
+  let isFirstTurn = true;
+  const [turn, setTurn] = useState<'white' | 'black'>(isFirstTurn ? 'white' : getRandomTurn());
   const [board, setBoard] = useState(setInitialBoard());
   const [winner, setWinner] = useState<null | 'white' | 'black'>(null);
 
   const toggleTurn = () => {
+    if (isFirstTurn) isFirstTurn = false;
     setTurn((prevTurn) => (prevTurn === 'white' ? 'black' : 'white'));
   };
 
@@ -40,11 +42,7 @@ export const Game = () => {
   return (
     <main className="game">
       <h1>Chess</h1>
-      {winner ? (
-        <p>{winner?.toUpperCase()} WINS!! 🎆</p>
-      ) : (
-        <h2>Current Turn: {turn.toUpperCase()}</h2>
-      )}
+      { winner ? (<p>{winner?.toUpperCase()} WINS!! 🎆</p>) : (<h2>Current Turn: {turn.toUpperCase()}</h2>) }
       <Board board={board} turn={turn} onMove={handleMove} />
     </main>
   );

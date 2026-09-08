@@ -1,11 +1,4 @@
-export type Pieces =
-  | 'king'
-  | 'queen'
-  | 'rook'
-  | 'bishop'
-  | 'knight'
-  | 'pawn'
-  | null;
+export type Pieces = 'king' | 'queen' | 'rook' | 'bishop' | 'knight' | 'pawn' | null;
 
 export type Piece = {
   identifier?: string;

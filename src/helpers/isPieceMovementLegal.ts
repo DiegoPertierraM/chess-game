@@ -29,6 +29,13 @@ const isPathClear = (
   // Only returns true for 1 square of distance, needs fix
 };
 
+const isKnightMoveLegal = ( start: [number, number], end: [number, number] ) => {
+  const rowDiff = Math.abs(start[0] - end[0]);
+  const colDiff = Math.abs(start[1] - end[1]);
+
+  return (rowDiff === 2 && colDiff === 1) || (rowDiff === 1 && colDiff === 2);
+}
+
 const isLegalMovement = (
   piece: Piece,
   targetSquare: Piece,
@@ -114,7 +121,7 @@ const isLegalMovement = (
       }
       return false;
     case 'knight':
-      return false;
+      return isKnightMoveLegal(piece.position, targetSquare.position)
     default:
       return false;
   }
